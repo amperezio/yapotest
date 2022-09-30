@@ -21,14 +21,30 @@ export class AppService {
       this.http.get('https://itunes.apple.com/search?term=' + artist).pipe(
         map((response) => response.data.results.slice(0, 24)),
         map((response) => {
+
+          let cancionesArray = [];
           response.forEach((entry) => {
             setAlbums.add(entry.collectionName);
+            if (entry.hasOwnProperty('trackId')){
+              let cancion = {"cancion_id": entry['trackId'],
+                              "nombre_album": !entry.hasOwnProperty('collectionName') ? '' :  entry['collectionName'],
+                              "nombre_tema": !entry.hasOwnProperty('trackName') ? '' :  entry['trackName'],
+                              "preview_url" : !entry.hasOwnProperty('previewUrl') ? '' :  entry['previewUrl'],
+                              "fecha_lanzamiento": !entry.hasOwnProperty('releaseDate') ? '' :  entry['releaseDate'],
+                              "precio" : {
+                                "valor": !entry.hasOwnProperty('collectionPrice') ? '' :  entry['collectionPrice'],
+                                "moneda": !entry.hasOwnProperty('currency') ? '' :  entry['currency']
+                              }
+                            }
+              cancionesArray.push(cancion)
+          }
           });
 
           const retorno = {
             ...response,
             albumes: Array.from(setAlbums),
             total_albumes: setAlbums.size,
+            canciones : cancionesArray
           };
 
           this.cacheManager.set(artist, retorno, { ttl: 3600 });
