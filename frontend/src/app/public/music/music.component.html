@@ -1,0 +1,39 @@
+<main class="form-signin">
+  <form [formGroup]="form" (submit)="submit()">
+    <h1 class="h3 mb-3 fw-normal">Busca tu Artista</h1>
+
+    <input formControlName="nombre_banda" name="nombre_banda" type="text" class="form-control" placeholder="Buscar banda" required>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-sm">
+      <thead>
+      <tr>
+        <th>Nombre canción</th>
+        <th>Nombre Album</th>
+        <th>Url preview</th>
+        <th>Precio</th>
+        <th>Fecha de lanzamiento</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let song of songs">
+        <tr>
+          <td>{{song.nombre_cancion}}</td>
+          <td>{{song.nombre_album}}</td>
+          <td>{{song.url_preview}}</td>
+          <td>{{song.precio}}</td>
+          <td>{{song.fecha_de_lanzamiento}}</td>
+
+
+        </tr>
+
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+
+</main>
